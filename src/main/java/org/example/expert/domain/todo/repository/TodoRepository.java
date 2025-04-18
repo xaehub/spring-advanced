@@ -15,8 +15,9 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
     @EntityGraph(attributePaths = "user")
     Page<Todo> findAllByOrderByModifiedAtDesc(Pageable pageable);
 
-    @EntityGraph(attributePaths = "user")
-    Optional<Todo> findByIdWithUser(@Param("todoId") Long todoId);
+    @Query("SELECT t from Todo t join fetch t.user where t.id = :id")
+    Optional<Todo> findByIdWithUser(@Param("id") Long id);
+
 
     int countById(Long todoId);
 }
